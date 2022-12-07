@@ -5,30 +5,26 @@ class ProductManager {
 
     addProduct = (title, description, price, thumbnail, code, stock) => {
         let producto = {
-            title: title != "",
-            description: description != "",
-            price: price != null,
-            thumbnail: thumbnail != "",
-            code: code != "",
-            stock: stock != null
+            title: title,
+            description: description,
+            price: price,
+            thumbnail: thumbnail,
+            code: code,
+            stock: stock
         };
 
-        if (!title || !description || !price || !thumbnail || !code || !stock === false) {
-            console.log('FATAL ERROR: at least 1 item is missing');
-            if (this.products.find((producto) => producto.code) === code) {
+        if (this.products.length ===0) {
+            producto['id'] = 1;
+            this.products.push(producto);
+        } else {
+            let codigo = this.products.find(producto => producto.code === code)
+            if(codigo) {
+                producto['id'] = this.products[this.products.length -1]['id'] + 1;
                 this.products.push(producto);
             } else {
                 console.log("This product already exists");
-            };
+            }
         }
-
-        if (this.products.length === 0) {
-            producto["id"] = 1;
-        } else {
-            producto["id"] = this.products[this.products.length - 1]["id"] + 1;
-        };
-        this.products.push(producto)
-
     }
 
     getProducts = () => {
@@ -38,10 +34,10 @@ class ProductManager {
 
     getProductById = (id) => {
         let producto = this.products.find(res => res.id === id)
-        if (producto) {
-            console.log('Not Found');
-        } else {
+        if (producto >= 1) {
             return producto;
+        } else {
+            console.log('Not Found');
         };
     }
 }
